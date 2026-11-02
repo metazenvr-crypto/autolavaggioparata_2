@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autolavaggio Parata | Cura Dell'Auto a San Vito dei Normanni (BR)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#090D16',
+                            card: '#111827',
+                            blue: '#0284c7',
+                            cyan: '#06b6d4',
+                            electric: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090D16;
+            color: #F9FAFB;
+            overflow-x: hidden;
+        }
+        /* Effetto vetro (Glassmorphism) */
+        .glass-nav {
+            background: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(6, 182, 212, 0.2);
+        }
+        /* Gradiente testuale */
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Glow custom */
+        .glow-effect {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(9, 13, 22, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* Stile barra di scorrimento */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090D16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+        /* Animazione gocce/bolle sottili */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Navbar Fissa -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25 group-hover:scale-105 transition-transform">
+                        <i class="ph-fill ph-sparkle text-slate-950 text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-xl tracking-tight text-white block leading-none">
+                            PARATA
+                        </span>
+                        <span class="text-xs font-medium text-cyan-400 tracking-widest uppercase block mt-1">
+                            Autolavaggio • San Vito
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Link Desktop -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#home" class="hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="#servizi" class="hover:text-cyan-400 transition-colors">Servizi</a>
+                    <a href="#configuratore" class="hover:text-cyan-400 transition-colors">Preventivo Rapido</a>
+                    <a href="#recensioni" class="hover:text-cyan-400 transition-colors">Recensioni</a>
+                    <a href="#orari-contatti" class="hover:text-cyan-400 transition-colors">Orari & Contatti</a>
+                </nav>
+
+                <!-- Badge Stato Live & CTA -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <!-- Dynamic Open/Closed Badge -->
+                    <div id="live-status-badge" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border bg-slate-900/90 border-slate-700 cursor-pointer" onclick="document.getElementById('orari-contatti').scrollIntoView()" title="Clicca per vedere gli orari completi">
+                        <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                        <span id="status-text" class="text-slate-300">Verifica orario...</span>
+                    </div>
+
+                    <a href="#prenota" class="px-5 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:brightness-110 transition-all flex items-center gap-2">
+                        <i class="ph-bold ph-calendar-check text-lg"></i>
+                        <span>Prenota Lavaggio</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <div id="live-status-badge-mobile" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border bg-slate-900/90 border-slate-700">
+                        <span id="status-dot-mobile" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        <span id="status-text-mobile" class="text-slate-300">...</span>
+                    </div>
+                    <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-800/80 text-slate-200 hover:text-cyan-400 border border-slate-700 focus:outline-none">
+                        <i class="ph ph-list text-2xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900/98 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3">
+            <a href="#home" class="mobile-link block px-4 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-cyan-400">Home</a>
+            <a href="#servizi" class="mobile-link block px-4 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-cyan-400">Servizi</a>
+            <a href="#configuratore" class="mobile-link block px-4 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-cyan-400">Preventivo Rapido</a>
+            <a href="#recensioni" class="mobile-link block px-4 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-cyan-400">Recensioni (4.7 ★)</a>
+            <a href="#orari-contatti" class="mobile-link block px-4 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-cyan-400">Orari & Dove Siamo</a>
+            <div class="pt-2">
+                <a href="#prenota" class="mobile-link w-full py-3 rounded-xl font-semibold text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-calendar-check text-lg"></i>
+                    <span>Prenota Appuntamento</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <!-- Luci di sfondo -->
+        <div class="glow-effect -top-20 -left-20"></div>
+        <div class="glow-effect top-40 right-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Colonna Testo Hero -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <!-- Badge Recensioni -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-800/80 border border-cyan-500/30 shadow-inner">
+                        <div class="flex items-center text-amber-400 text-sm">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star-half"></i>
+                        </div>
+                        <span class="text-xs sm:text-sm font-bold text-white">4.7 / 5</span>
+                        <span class="text-xs text-slate-400 border-l border-slate-700 pl-2">Oltre 209 Recensioni Verificate</span>
+                    </div>
+
+                    <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.12]">
+                        Fai brillare la tua auto come <span class="text-gradient">appena uscita dal salone.</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Da <strong class="text-white">Autolavaggio Parata</strong> a San Vito dei Normanni uniamo passione, prodotti nanotecnologici di alta qualità e attenzione maniacale per ogni dettaglio interno ed esterno del tuo veicolo.
+                    </p>
+
+                    <!-- Info Rapide Location & Orario Oggi -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-slate-300 pt-1">
+                        <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800">
+                            <i class="ph-fill ph-map-pin text-cyan-400 text-lg"></i>
+                            <span>Via Latiano, San Vito dei Normanni (BR)</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800">
+                            <i class="ph-fill ph-clock text-cyan-400 text-lg"></i>
+                            <span id="hero-today-hours">Lun-Ven: 07:00-12:30, 14:15-18:00 | Sab: 07:00-16:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottoni CTA -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#configuratore" class="w-full sm:w-auto px-7 py-4 rounded-2xl font-display font-bold text-base bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-600 text-slate-950 shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all flex items-center justify-center gap-2.5">
+                            <i class="ph-bold ph-calculator text-xl"></i>
+                            <span>Calcola Preventivo Rapido</span>
+                        </a>
+                        <a href="#servizi" class="w-full sm:w-auto px-7 py-4 rounded-2xl font-display font-semibold text-base bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/40 transition-all flex items-center justify-center gap-2">
+                            <span>Esplora i Servizi</span>
+                            <i class="ph-bold ph-arrow-down text-cyan-400"></i>
+                        </a>
+                    </div>
+
+                    <!-- Punti di Forza Mini -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+                        <div class="text-center lg:text-left">
+                            <p class="font-display font-extrabold text-2xl text-white">100%</p>
+                            <p class="text-xs text-slate-400">Finitura a Mano</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="font-display font-extrabold text-2xl text-cyan-400">4.7 ★</p>
+                            <p class="text-xs text-slate-400">209+ Clienti Felici</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="font-display font-extrabold text-2xl text-white">Sicuro</p>
+                            <p class="text-xs text-slate-400">Prodotti Antigraffio</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonna Illustrazione / Card Visual Automotive -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Card Principale Visual -->
+                        <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-cyan-500/30 shadow-2xl">
+                            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-cyan-500/20 rounded-full blur-2xl"></div>
+                            
+                            <!-- Intestazione Card Visual -->
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                                    Qualità Professionale
+                                </span>
+                                <span class="text-xs text-slate-400 flex items-center gap-1">
+                                    <i class="ph-fill ph-shield-check text-emerald-400 text-base"></i> Cura Garantita
+                                </span>
+                            </div>
+
+                            <!-- Illustrazione SVG Auto Sportiva Stilizzata con Effetto Schiuma/Brillantezza -->
+                            <div class="my-6 relative flex items-center justify-center py-6 bg-slate-950/60 rounded-2xl border border-slate-800/80 overflow-hidden">
+                                <!-- Griglia prospettica di fondo -->
+                                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 16px 16px;"></div>
+                                
+                                <svg viewBox="0 0 400 180" class="w-full h-auto max-w-[340px] drop-shadow-[0_0_20px_rgba(6,182,212,0.4)] animate-float" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Ombra a terra -->
+                                    <ellipse cx="200" cy="152" rx="165" ry="12" fill="url(#shadowGrad)"/>
+                                    <!-- Corpo Auto Silhouette Moderna -->
+                                    <path d="M35 125 L50 95 L115 85 L160 50 L275 50 L330 85 L365 95 L375 125 L360 140 L45 140 Z" fill="url(#carBodyGrad)" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>
+                                    <!-- Finestrini -->
+                                    <path d="M128 84 L165 56 L220 56 L220 84 Z" fill="#090D16" stroke="#06b6d4" stroke-width="1.5"/>
+                                    <path d="M228 56 L270 56 L315 84 L228 84 Z" fill="#090D16" stroke="#06b6d4" stroke-width="1.5"/>
+                                    <!-- Linee Aerodinamiche Luminose -->
+                                    <path d="M55 110 Q200 100 355 110" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+                                    <!-- Fari Anteriori e Posteriori -->
+                                    <path d="M352 98 L370 104 L365 114 L348 110 Z" fill="#e0f2fe" filter=" drop-shadow(0 0 8px #38bdf8)"/>
+                                    <path d="M40 98 L55 102 L52 112 L38 110 Z" fill="#f43f5e" filter="drop-shadow(0 0 6px #f43f5e)"/>
+                                    <!-- Ruote -->
+                                    <circle cx="105" cy="138" r="24" fill="#0f172a" stroke="#38bdf8" stroke-width="3"/>
+                                    <circle cx="105" cy="138" r="14" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4"/>
+                                    <circle cx="105" cy="138" r="5" fill="#06b6d4"/>
+                                    
+                                    <circle cx="305" cy="138" r="24" fill="#0f172a" stroke="#38bdf8" stroke-width="3"/>
+                                    <circle cx="305" cy="138" r="14" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4"/>
+                                    <circle cx="305" cy="138" r="5" fill="#06b6d4"/>
+
+                                    <!-- Stelle / Brillantezza -->
+                                    <path d="M180 30 L183 38 L191 41 L183 44 L180 52 L177 44 L169 41 L177 38 Z" fill="#38bdf8"/>
+                                    <path d="M320 40 L322 45 L327 47 L322 49 L320 54 L318 49 L313 47 L318 45 Z" fill="#7dd3fc"/>
+                                    <circle cx="90" cy="60" r="3" fill="#38bdf8" opacity="0.8"/>
+                                    <circle cx="260" cy="30" r="2.5" fill="#38bdf8" opacity="0.6"/>
+
+                                    <defs>
+                                        <linearGradient id="carBodyGrad" x1="35" y1="50" x2="375" y2="140" gradientUnits="userSpaceOnUse">
+                                            <stop offset="0%" stop-color="#0284c7"/>
+                                            <stop offset="50%" stop-color="#0f172a"/>
+                                            <stop offset="100%" stop-color="#06b6d4"/>
+                                        </linearGradient>
+                                        <radialGradient id="shadowGrad" cx="50%" cy="50%" r="50%">
+                                            <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.45"/>
+                                            <stop offset="100%" stop-color="#090D16" stop-opacity="0"/>
+                                        </radialGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+
+                            <!-- Fasi del Trattamento Parata -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-lg bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold">
+                                            <i class="ph-fill ph-drop text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">Schiuma Attiva & Prelavaggio</h4>
+                                            <p class="text-xs text-slate-400">Rimozione delicata dello sporco ostinato</p>
+                                        </div>
+                                    </div>
+                                    <i class="ph-bold ph-check-circle text-emerald-400 text-xl"></i>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold">
+                                            <i class="ph-fill ph-sparkle text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">Igienizzazione Interni & Tappezzeria</h4>
+                                            <p class="text-xs text-slate-400">Abitacolo fresco, pulito e profumato</p>
+                                        </div>
+                                    </div>
+                                    <i class="ph-bold ph-check-circle text-emerald-400 text-xl"></i>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold">
+                                            <i class="ph-fill ph-hand-soap text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">Asciugatura in Microfibra & Nero Gomme</h4>
+                                            <p class="text-xs text-slate-400">Zero aloni su vetri e carrozzeria</p>
+                                        </div>
+                                    </div>
+                                    <i class="ph-bold ph-check-circle text-emerald-400 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE SERVIZI COMPLETI -->
+    <section id="servizi" class="py-20 bg-slate-950/60 border-y border-slate-800/80 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Intestazione Sezione -->
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    I Nostri Trattamenti
+                </span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white">
+                    Servizi su misura per ogni esigenza
+                </h2>
+                <p class="text-slate-400 text-base">
+                    Utilizziamo attrezzature d'avanguardia e detergenti professionali delicati sulle superfici ma implacabili contro lo sporco.
+                </p>
+            </div>
+
+            <!-- Griglia 4 Card Servizi -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1: Lavaggio Completo -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-gradient-to-l from-cyan-500 to-blue-600 text-slate-950 text-[11px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                        Più Richiesto
+                    </div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-duotone ph-car-profile text-3xl"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-white mb-2">Lavaggio Completo</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            Cura totale interna ed esterna a mano e ad alta precisione per restituire splendore a tutta l'auto.
+                        </p>
+                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Aspirazione completa abitacolo e baule
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Pulizia cruscotto, plastiche e vetri interni
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Lavaggio esterno con schiuma attiva
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Asciugatura a mano e nero gomme
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="selectServiceFromCard('completo')" class="w-full py-3 rounded-xl font-semibold text-sm bg-cyan-500/15 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 border border-cyan-500/30 transition-all flex items-center justify-center gap-2">
+                        <span>Seleziona nel Preventivo</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Card 2: Lavaggio Esterno & Cerchi -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-duotone ph-drop-half-bottom text-3xl"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-white mb-2">Esterno & Cerchi</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            Lavaggio esterno accurato con rimozione moscerini, decontaminazione cerchi e finitura brillante.
+                        </p>
+                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Prelavaggio emolliente con schiuma attiva
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Risciacquo ad alta pressione controllata
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Sgrassaggio cerchi in lega e passaruota
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Asciugatura in panno microfibra e nero gomme
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="selectServiceFromCard('esterno')" class="w-full py-3 rounded-xl font-semibold text-sm bg-slate-800 hover:bg-cyan-500 text-slate-200 hover:text-slate-950 border border-slate-700 hover:border-cyan-500 transition-all flex items-center justify-center gap-2">
+                        <span>Seleziona nel Preventivo</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Card 3: Igienizzazione e Sanificazione Interni -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-duotone ph-wind text-3xl"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-white mb-2">Igienizzazione Interni</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            Pulizia profonda di sedili, moquette e tappezzeria con rimozione macchie e trattamento antiodore.
+                        </p>
+                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Lavaggio ad estrazione sedili e tessuto/pelle
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Sanificazione bocchette aria e abitacolo
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Cura e rinnovo plastiche e guarnizioni
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Neutralizzazione odori (fumo, animali, muffe)
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="selectServiceFromCard('igienizzazione')" class="w-full py-3 rounded-xl font-semibold text-sm bg-slate-800 hover:bg-cyan-500 text-slate-200 hover:text-slate-950 border border-slate-700 hover:border-cyan-500 transition-all flex items-center justify-center gap-2">
+                        <span>Seleziona nel Preventivo</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Card 4: Cura Carrozzeria & Cera Protettiva -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                            <i class="ph-duotone ph-shield-star text-3xl"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-white mb-2">Cera & Protezione</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            Trattamento lucidante e idrorepellente per proteggere la vernice da pioggia, raggi UV e agenti esterni.
+                        </p>
+                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Applicazione cera protettiva ad effetto specchio
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Effetto idrorepellente (scivolamento acqua)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Protezione contro sporco stradale e resine
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="ph-bold ph-check text-cyan-400"></i> Esaltazione della profondità del colore
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="selectServiceFromCard('cera')" class="w-full py-3 rounded-xl font-semibold text-sm bg-slate-800 hover:bg-cyan-500 text-slate-200 hover:text-slate-950 border border-slate-700 hover:border-cyan-500 transition-all flex items-center justify-center gap-2">
+                        <span>Seleziona nel Preventivo</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CONFIGURATORE / CALCOLATORE PREVENTIVO INTERATTIVO -->
+    <section id="configuratore" class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14 space-y-4">
+                <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/10 text-cyan-400 border border-cyan-500/20">
+                    Configuratore Interattivo
+                </span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white">
+                    Calcola il tuo Preventivo e Tempo Stimato
+                </h2>
+                <p class="text-slate-400 text-base">
+                    Scegli la tipologia del tuo veicolo e i trattamenti desiderati: ottieni subito una stima indicativa e invia la tua richiesta di prenotazione in un clic.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Colonna Scelte (Veicolo + Servizi) -->
+                <div class="lg:col-span-8 space-y-8">
+                    
+                    <!-- Step 1: Tipo di Veicolo -->
+                    <div class="glass-card rounded-2xl p-6 sm:p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-500 text-slate-950 font-display font-extrabold flex items-center justify-center text-sm">1</span>
+                            <h3 class="font-display font-bold text-xl text-white">Seleziona la tipologia di veicolo</h3>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="vehicle-selector">
+                            <!-- Utilitaria -->
+                            <button type="button" onclick="selectVehicle('utilitaria')" data-vehicle="utilitaria" class="vehicle-btn p-4 rounded-xl border-2 border-cyan-400 bg-cyan-500/15 text-left transition-all flex flex-col justify-between">
+                                <i class="ph-duotone ph-car-simple text-3xl text-cyan-400 mb-3"></i>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Utilitaria / Citycar</p>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Panda, 500, Yaris, Smart</p>
+                                </div>
+                            </button>
+
+                            <!-- Berlina / Station Wagon -->
+                            <button type="button" onclick="selectVehicle('berlina')" data-vehicle="berlina" class="vehicle-btn p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-left transition-all flex flex-col justify-between">
+                                <i class="ph-duotone ph-car text-3xl text-slate-300 mb-3"></i>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Berlina / SW</p>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Golf, Serie 3, Audi A4, Tipo</p>
+                                </div>
+                            </button>
+
+                            <!-- SUV / Fuoristrada -->
+                            <button type="button" onclick="selectVehicle('suv')" data-vehicle="suv" class="vehicle-btn p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-left transition-all flex flex-col justify-between">
+                                <i class="ph-duotone ph-jeep text-3xl text-slate-300 mb-3"></i>
+                                <div>
+                                    <p class="font-bold text-white text-sm">SUV / Crossover</p>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Qashqai, Compass, Tiguan, X5</p>
+                                </div>
+                            </button>
+
+                            <!-- Furgone / Van -->
+                            <button type="button" onclick="selectVehicle('furgone')" data-vehicle="furgone" class="vehicle-btn p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-left transition-all flex flex-col justify-between">
+                                <i class="ph-duotone ph-van text-3xl text-slate-300 mb-3"></i>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Furgone / Van</p>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Doblo, Ducato, Vito, 7-9 Posti</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Scelta Trattamenti -->
+                    <div class="glass-card rounded-2xl p-6 sm:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-cyan-500 text-slate-950 font-display font-extrabold flex items-center justify-center text-sm">2</span>
+                                <h3 class="font-display font-bold text-xl text-white">Scegli i servizi desiderati</h3>
+                            </div>
+                            <span class="text-xs text-slate-400">Puoi combinare più opzioni</span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-4" id="service-selector">
+                            <!-- Opzione 1: Lavaggio Completo -->
+                            <div onclick="toggleService('completo')" id="srv-completo" class="service-item cursor-pointer p-4 rounded-xl border-2 border-cyan-400 bg-cyan-500/15 transition-all flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-0.5 w-5 h-5 rounded-md bg-cyan-400 text-slate-950 flex items-center justify-center checkbox-icon">
+                                        <i class="ph-bold ph-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">Lavaggio Completo (Int + Est)</p>
+                                        <p class="text-xs text-slate-300 mt-0.5">Abitacolo, bagagliaio, schiuma attiva, cerchi e asciugatura a mano</p>
+                                        <span class="inline-block mt-2 text-[11px] font-semibold text-cyan-300 bg-slate-900/80 px-2 py-0.5 rounded">~ 45-60 min</span>
+                                    </div>
+                                </div>
+                                <span class="font-display font-bold text-cyan-300 text-sm whitespace-nowrap" id="price-completo">€15</span>
+                            </div>
+
+                            <!-- Opzione 2: Solo Lavaggio Esterno & Cerchi -->
+                            <div onclick="toggleService('esterno')" id="srv-esterno" class="service-item cursor-pointer p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 transition-all flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-0.5 w-5 h-5 rounded-md border border-slate-600 text-transparent flex items-center justify-center checkbox-icon">
+                                        <i class="ph-bold ph-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">Solo Esterno & Cerchi</p>
+                                        <p class="text-xs text-slate-400 mt-0.5">Schiuma attiva, alta pressione, microfibra e nero gomme</p>
+                                        <span class="inline-block mt-2 text-[11px] font-semibold text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded">~ 25-30 min</span>
+                                    </div>
+                                </div>
+                                <span class="font-display font-bold text-white text-sm whitespace-nowrap" id="price-esterno">€10</span>
+                            </div>
+
+                            <!-- Opzione 3: Igienizzazione e Sanificazione Interni -->
+                            <div onclick="toggleService('igienizzazione')" id="srv-igienizzazione" class="service-item cursor-pointer p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 transition-all flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-0.5 w-5 h-5 rounded-md border border-slate-600 text-transparent flex items-center justify-center checkbox-icon">
+                                        <i class="ph-bold ph-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">Igienizzazione Approfondita Interni</p>
+                                        <p class="text-xs text-slate-400 mt-0.5">Trattamento sedili, smacchiatura tappezzeria e sanificazione</p>
+                                        <span class="inline-block mt-2 text-[11px] font-semibold text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded">+ 40 min</span>
+                                    </div>
+                                </div>
+                                <span class="font-display font-bold text-white text-sm whitespace-nowrap" id="price-igienizzazione">€25</span>
+                            </div>
+
+                            <!-- Opzione 4: Cera Protettiva & Lucidante -->
+                            <div onclick="toggleService('cera')" id="srv-cera" class="service-item cursor-pointer p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 transition-all flex items-start justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-0.5 w-5 h-5 rounded-md border border-slate-600 text-transparent flex items-center justify-center checkbox-icon">
+                                        <i class="ph-bold ph-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">Cera Protettiva Idrorepellente</p>
+                                        <p class="text-xs text-slate-400 mt-0.5">Finitura ultra-lucida e velo protettivo per la carrozzeria</p>
+                                        <span class="inline-block mt-2 text-[11px] font-semibold text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded">+ 15 min</span>
+                                    </div>
+                                </div>
+                                <span class="font-display font-bold text-white text-sm whitespace-nowrap" id="price-cera">€8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonna Riepilogo Preventivo -->
+                <div class="lg:col-span-4 lg:sticky lg:top-28">
+                    <div class="glass-card rounded-2xl p-6 sm:p-8 border-2 border-cyan-500/40 relative overflow-hidden">
+                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl"></div>
+
+                        <h3 class="font-display font-extrabold text-xl text-white mb-1">Riepilogo Trattamento</h3>
+                        <p class="text-xs text-slate-400 mb-6">Stima calcolata in tempo reale</p>
+
+                        <div class="space-y-4 border-y border-slate-800 py-5 mb-6">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-400">Veicolo selezionato:</span>
+                                <span id="summary-vehicle" class="font-bold text-white bg-slate-800 px-3 py-1 rounded-lg">Utilitaria / Citycar</span>
+                            </div>
+
+                            <div>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">Servizi inclusi:</span>
+                                <ul id="summary-services-list" class="space-y-2 text-sm text-slate-200">
+                                    <!-- Populated via JS -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Tempo e Costo Stimato -->
+                        <div class="grid grid-cols-2 gap-4 bg-slate-950/80 p-4 rounded-xl border border-slate-800 mb-6">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Tempo stimato</span>
+                                <div class="flex items-center gap-1.5 mt-1">
+                                    <i class="ph-fill ph-timer text-cyan-400 text-lg"></i>
+                                    <span id="summary-time" class="font-display font-extrabold text-lg text-white">~ 45 min</span>
+                                </div>
+                            </div>
+                            <div class="border-l border-slate-800 pl-4">
+                                <span class="text-xs text-slate-400 block">Stima indicativa*</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="summary-price" class="font-display font-extrabold text-2xl text-cyan-400">€15</span>
+                                    <span class="text-[11px] text-slate-400">circa</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="transferToBooking()" class="w-full py-4 rounded-xl font-display font-bold text-sm bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 shadow-lg shadow-cyan-500/25 hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                            <i class="ph-bold ph-calendar-plus text-lg"></i>
+                            <span>Prenota con questa Configurazione</span>
+                        </button>
+
+                        <p class="text-[11px] text-slate-500 text-center mt-4 leading-tight">
+                            *I prezzi e i tempi sono puramente indicativi e possono variare in sede in base alle condizioni effettive del veicolo.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE RECENSIONI E PUNTI DI FORZA -->
+    <section id="recensioni" class="py-20 bg-slate-950/70 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Header Recensioni con Punteggio 4.7/5 -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
+                <div class="space-y-3 max-w-2xl">
+                    <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        La Voce dei Nostri Clienti
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white">
+                        Un punto di riferimento a San Vito dei Normanni
+                    </h2>
+                    <p class="text-slate-400 text-base">
+                        La soddisfazione di chi ci affida la propria auto ogni settimana è il nostro miglior biglietto da visita.
+                    </p>
+                </div>
+
+                <!-- Box Valutazione Ufficiale Google -->
+                <div class="glass-card px-6 py-4 rounded-2xl flex items-center gap-5 border border-amber-500/30 self-start lg:self-auto">
+                    <div class="text-center pr-5 border-r border-slate-800">
+                        <span class="font-display font-extrabold text-4xl text-white block leading-none">4.7</span>
+                        <span class="text-[11px] text-slate-400 uppercase tracking-wider">su 5 stelle</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center text-amber-400 text-lg mb-1">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star-half"></i>
+                        </div>
+                        <p class="text-sm font-bold text-white">Oltre 209 Recensioni</p>
+                        <p class="text-xs text-slate-400">Valutazione media dei clienti</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Pilastri di Qualità -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+                <div class="bg-slate-900/70 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
+                        <i class="ph-duotone ph-crosshair text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Massima Precisione</h4>
+                        <p class="text-xs text-slate-400">Cura dei minimi dettagli</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900/70 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                        <i class="ph-duotone ph-lightning text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Servizio Rapido</h4>
+                        <p class="text-xs text-slate-400">Puntualità nelle consegne</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900/70 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="ph-duotone ph-flask text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Prodotti Top</h4>
+                        <p class="text-xs text-slate-400">Detergenti sicuri e profumati</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900/70 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+                        <i class="ph-duotone ph-handshake text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Cortesia & Serietà</h4>
+                        <p class="text-xs text-slate-400">Staff sempre disponibile</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Testimonianze -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Recensione 1 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center text-amber-400 text-sm">
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                            </div>
+                            <span class="text-xs text-slate-500">Cliente Verificato</span>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed mb-6">
+                            "Personale gentilissimo e super scrupoloso. Ho portato la mia auto con gli interni molto sporchi ed è tornata letteralmente come nuova, profumatissima. Il miglior autolavaggio a San Vito dei Normanni!"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-slate-950 font-bold flex items-center justify-center text-sm">
+                            M.R.
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Marco R.</p>
+                            <p class="text-xs text-slate-400">Lavaggio Completo SUV</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recensione 2 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center text-amber-400 text-sm">
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                            </div>
+                            <span class="text-xs text-slate-500">Cliente Verificato</span>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed mb-6">
+                            "Veloci, precisi e onesti. Si vede che usano prodotti di qualità perché la carrozzeria resta lucida a lungo e sui vetri non lasciano il minimo alone. Consigliatissimo anche il sabato con orario continuato."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-500 text-slate-950 font-bold flex items-center justify-center text-sm">
+                            A.L.
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Alessandro L.</p>
+                            <p class="text-xs text-slate-400">Lavaggio + Cera Protettiva</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recensione 3 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center text-amber-400 text-sm">
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                                <i class="ph-fill ph-star"></i>
+                            </div>
+                            <span class="text-xs text-slate-500">Cliente Verificato</span>
+                        </div>
+                        <p class="text-slate-300 text-sm italic leading-relaxed mb-6">
+                            "Cortesia, professionalità e attenzione ai dettagli. Hanno smacchiato i sedili della mia utilitaria in modo impeccabile. Un servizio davvero a 5 stelle in Via Latiano."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-400 to-indigo-500 text-white font-bold flex items-center justify-center text-sm">
+                            V.C.
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Valentina C.</p>
+                            <p class="text-xs text-slate-400">Igienizzazione Interni</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SEZIONE ORARI, INDICAZIONI E PRENOTAZIONE -->
+    <section id="orari-contatti" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- Colonna Sinistra: Orari Reali & Mappa Stilizzata (Via Latiano) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                            Dove Siamo & Orari
+                        </span>
+                        <h2 class="font-display font-extrabold text-3xl text-white mt-3">
+                            Vieni a trovarci a San Vito dei Normanni
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-2">
+                            Ci troviamo in posizione comoda e facilmente raggiungibile su Via Latiano.
+                        </p>
+                    </div>
+
+                    <!-- Box Orari di Apertura con Evidenziazione Giorno Corrente -->
+                    <div class="glass-card rounded-2xl p-6 border border-slate-800">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                            <div class="flex items-center gap-2.5">
+                                <i class="ph-fill ph-clock text-cyan-400 text-xl"></i>
+                                <h3 class="font-display font-bold text-lg text-white">Orari di Apertura</h3>
+                            </div>
+                            <span id="schedule-live-pill" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">
+                                Oggi
+                            </span>
+                        </div>
+
+                        <ul class="space-y-2.5 text-sm" id="weekly-hours-list">
+                            <li data-day="1" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Lunedì</span>
+                                <span class="text-white font-semibold">07:00 – 12:30, 14:15 – 18:00</span>
+                            </li>
+                            <li data-day="2" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Martedì</span>
+                                <span class="text-white font-semibold">07:00 – 12:30, 14:15 – 18:00</span>
+                            </li>
+                            <li data-day="3" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Mercoledì</span>
+                                <span class="text-white font-semibold">07:00 – 12:30, 14:15 – 18:00</span>
+                            </li>
+                            <li data-day="4" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Giovedì</span>
+                                <span class="text-white font-semibold">07:00 – 12:30, 14:15 – 18:00</span>
+                            </li>
+                            <li data-day="5" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Venerdì</span>
+                                <span class="text-white font-semibold">07:00 – 12:30, 14:15 – 18:00</span>
+                            </li>
+                            <li data-day="6" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-300 font-medium">Sabato <span class="text-[10px] text-cyan-400 font-bold uppercase ml-1">(Continuato)</span></span>
+                                <span class="text-cyan-300 font-semibold">07:00 – 16:00</span>
+                            </li>
+                            <li data-day="0" class="flex justify-between items-center py-1.5 px-3 rounded-lg transition-colors">
+                                <span class="text-slate-400 font-medium">Domenica</span>
+                                <span class="text-rose-400 font-semibold">Chiuso</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Card Indirizzo e Mappa Interattiva Stilizzata -->
+                    <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="ph-fill ph-map-pin-line text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-display font-bold text-white text-base">Autolavaggio Parata</h4>
+                                    <p class="text-slate-300 text-sm">Via Latiano, 72019 San Vito dei Normanni (BR), Italia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mappa Visuale Vetro / Indicazioni -->
+                        <div class="relative h-44 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+                            <!-- Grafica Stradale Stilizzata -->
+                            <svg class="absolute inset-0 w-full h-full opacity-35" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <pattern id="road-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#road-grid)" />
+                                <!-- Direttrice Via Latiano -->
+                                <line x1="0" y1="140" x2="500" y2="30" stroke="#334155" stroke-width="16" />
+                                <line x1="0" y1="140" x2="500" y2="30" stroke="#06b6d4" stroke-width="2" stroke-dasharray="8 8" />
+                                <line x1="120" y1="0" x2="260" y2="200" stroke="#1e293b" stroke-width="10" />
+                            </svg>
+                            
+                            <!-- Pin Centrale -->
+                            <div class="relative z-10 flex flex-col items-center text-center px-4">
+                                <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center animate-bounce shadow-lg shadow-cyan-500/30">
+                                    <i class="ph-fill ph-map-pin text-cyan-400 text-2xl"></i>
+                                </div>
+                                <span class="mt-1 px-3 py-1 rounded-full bg-slate-900/95 border border-slate-700 text-xs font-bold text-white shadow">
+                                    Via Latiano • San Vito dei Normanni
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-3 pt-1">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Autolavaggio+Parata+Via+Latiano+San+Vito+dei+Normanni+BR" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                                <i class="ph-bold ph-navigation-arrow text-base"></i>
+                                <span>Apri in Google Maps</span>
+                            </a>
+                            <button type="button" onclick="copyAddress()" class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-all">
+                                <i class="ph-bold ph-copy text-base text-cyan-400"></i>
+                                <span id="copy-address-text">Copia Indirizzo</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonna Destra: Modulo di Prenotazione Appuntamento -->
+                <div class="lg:col-span-7" id="prenota">
+                    <div class="glass-card rounded-3xl p-6 sm:p-10 border border-cyan-500/30 relative">
+                        <div class="mb-8">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300">
+                                Prenotazione Rapida
+                            </span>
+                            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-2">
+                                Prenota il tuo Appuntamento
+                            </h3>
+                            <p class="text-slate-400 text-sm mt-1">
+                                Salta l'attesa! Scegli giorno, fascia oraria e il tipo di lavaggio per la tua auto.
+                            </p>
+                        </div>
+
+                        <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-5">
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <!-- Nome e Cognome -->
+                                <div>
+                                    <label for="client-name" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nome e Cognome *</label>
+                                    <div class="relative">
+                                        <i class="ph ph-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                                        <input type="text" id="client-name" required placeholder="Es. Mario Rossi" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                    </div>
+                                </div>
+
+                                <!-- Telefono / WhatsApp -->
+                                <div>
+                                    <label for="client-phone" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Telefono / Cellulare *</label>
+                                    <div class="relative">
+                                        <i class="ph ph-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                                        <input type="tel" id="client-phone" required placeholder="Es. 333 1234567" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <!-- Modello Auto / Tipologia -->
+                                <div>
+                                    <label for="booking-vehicle" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Tipologia & Modello Auto *</label>
+                                    <div class="relative">
+                                        <i class="ph ph-car absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                                        <select id="booking-vehicle" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                            <option value="Utilitaria / Citycar">Utilitaria / Citycar</option>
+                                            <option value="Berlina / Station Wagon">Berlina / Station Wagon</option>
+                                            <option value="SUV / Fuoristrada">SUV / Fuoristrada</option>
+                                            <option value="Furgone / Van">Furgone / Van</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Servizio Richiesto -->
+                                <div>
+                                    <label for="booking-service" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Servizio Principale *</label>
+                                    <div class="relative">
+                                        <i class="ph ph-sparkle absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                                        <input type="text" id="booking-service" required value="Lavaggio Completo (Int + Est)" class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <!-- Data Preferita -->
+                                <div>
+                                    <label for="booking-date" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Giorno Preferito (Lun-Sab) *</label>
+                                    <input type="date" id="booking-date" required onchange="validateBookingDay(this)" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <p id="sunday-warning" class="hidden text-xs text-rose-400 mt-1">Domenica siamo chiusi! Seleziona un giorno da Lunedì a Sabato.</p>
+                                </div>
+
+                                <!-- Fascia Oraria -->
+                                <div>
+                                    <label for="booking-time" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Fascia Oraria *</label>
+                                    <select id="booking-time" required class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                                        <option value="Mattina Presto (07:00 - 09:30)">Mattina Presto (07:00 - 09:30)</option>
+                                        <option value="Mattina (09:30 - 12:30)">Mattina (09:30 - 12:30)</option>
+                                        <option value="Pomeriggio (14:15 - 16:00)">Pomeriggio (14:15 - 16:00)</option>
+                                        <option value="Tardo Pomeriggio (16:00 - 18:00 Lun-Ven)">Tardo Pomeriggio (16:00 - 18:00 Lun-Ven)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Note Aggiuntive -->
+                            <div>
+                                <label for="booking-notes" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Note o richieste particolari (Opzionale)</label>
+                                <textarea id="booking-notes" rows="2" placeholder="Es. Macchie sui sedili posteriori, peli di animale, modello auto specifico..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl font-display font-bold text-base bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-600 text-slate-950 shadow-xl shadow-cyan-500/25 hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                                <i class="ph-bold ph-check-circle text-xl"></i>
+                                <span>Conferma Richiesta Appuntamento</span>
+                            </button>
+                        </form>
+
+                        <!-- Messaggio Conferma Visiva (Nascosto di default) -->
+                        <div id="booking-confirmation" class="hidden mt-6 p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-3">
+                            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                                <i class="ph-fill ph-check-circle text-3xl"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl text-white">Richiesta di Prenotazione Registrata!</h4>
+                            <p id="confirmation-details" class="text-sm text-slate-300 max-w-md mx-auto"></p>
+                            <p class="text-xs text-emerald-300 font-medium">
+                                Ti aspettiamo da Autolavaggio Parata in Via Latiano, San Vito dei Normanni (BR).
+                            </p>
+                            <button type="button" onclick="resetBookingForm()" class="mt-2 px-4 py-2 rounded-lg bg-slate-800 text-xs font-semibold text-slate-200 hover:bg-slate-700">
+                                Effettua un'altra prenotazione
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER COMPLETO -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 pt-14 pb-10 text-sm text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-10 pb-10 border-b border-slate-800/80">
+                
+                <!-- Col 1: Brand -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                            <i class="ph-fill ph-sparkle text-slate-950 text-xl"></i>
+                        </div>
+                        <span class="font-display font-extrabold text-xl text-white">AUTOLAVAGGIO PARATA</span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-sm leading-relaxed">
+                        Il centro specializzato per il lavaggio a mano, l'igienizzazione d'interni e la cura estetica dell'auto a San Vito dei Normanni (Brindisi).
+                    </p>
+                    <div class="flex items-center gap-2 text-amber-400 font-semibold text-xs">
+                        <i class="ph-fill ph-star"></i>
+                        <span>Valutato 4.7/5 su Google (oltre 209 recensioni)</span>
+                    </div>
+                </div>
+
+                <!-- Col 2: Link Rapidi -->
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs">Navigazione</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="hover:text-cyan-400 transition-colors">Home</a></li>
+                        <li><a href="#servizi" class="hover:text-cyan-400 transition-colors">Servizi Completi</a></li>
+                        <li><a href="#configuratore" class="hover:text-cyan-400 transition-colors">Calcola Preventivo</a></li>
+                        <li><a href="#recensioni" class="hover:text-cyan-400 transition-colors">Recensioni Clienti</a></li>
+                        <li><a href="#prenota" class="hover:text-cyan-400 transition-colors">Prenota Lavaggio</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Riepilogo Contatti & Orari -->
+                <div class="md:col-span-4 space-y-3">
+                    <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs">Sede & Orari</h4>
+                    <p class="flex items-start gap-2.5 text-slate-300">
+                        <i class="ph-fill ph-map-pin text-cyan-400 text-lg shrink-0 mt-0.5"></i>
+                        <span>Via Latiano, 72019 San Vito dei Normanni (BR), Italia</span>
+                    </p>
+                    <div class="flex items-start gap-2.5 text-slate-300">
+                        <i class="ph-fill ph-clock text-cyan-400 text-lg shrink-0 mt-0.5"></i>
+                        <div class="text-xs space-y-1">
+                            <p><strong class="text-white">Lun - Ven:</strong> 07:00 – 12:30 / 14:15 – 18:00</p>
+                            <p><strong class="text-white">Sabato:</strong> 07:00 – 16:00 (Orario Continuato)</p>
+                            <p><strong class="text-rose-400">Domenica:</strong> Chiuso</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>© <span id="current-year"></span> Autolavaggio Parata - Via Latiano, San Vito dei Normanni (BR). Tutti i diritti riservati.</p>
+                <p>Qualità, Passione e Brillantezza per la tua Auto.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGICA INTERATTIVA -->
+    <script>
+        // 1. GESTIONE MENU MOBILE
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.replace('ph-x', 'ph-list');
+            } else {
+                menuIcon.classList.replace('ph-list', 'ph-x');
+            }
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.replace('ph-x', 'ph-list');
+            });
+        });
+
+        // 2. VERIFICA IN TEMPO REALE DELLO STATO "APERTO ORA" / "CHIUSO"
+        function updateOpenStatus() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Domenica, 1 = Lunedì, ..., 6 = Sabato
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentMinutes = hours * 60 + minutes;
+
+            let isOpen = false;
+            let statusMessage = '';
+
+            // Orari reali:
+            // Lun-Ven (1-5): 07:00 (420) - 12:30 (750) e 14:15 (855) - 18:00 (1080)
+            // Sabato (6): 07:00 (420) - 16:00 (960)
+            // Domenica (0): Chiuso
+
+            if (day >= 1 && day <= 5) {
+                if ((currentMinutes >= 420 && currentMinutes < 750) || (currentMinutes >= 855 && currentMinutes < 1080)) {
+                    isOpen = true;
+                    statusMessage = 'APERTO ORA';
+                } else if (currentMinutes >= 750 && currentMinutes < 855) {
+                    isOpen = false;
+                    statusMessage = 'PAUSA (Apre 14:15)';
+                } else {
+                    isOpen = false;
+                    statusMessage = 'CHIUSO ORA';
+                }
+            } else if (day === 6) {
+                if (currentMinutes >= 420 && currentMinutes < 960) {
+                    isOpen = true;
+                    statusMessage = 'APERTO ORA (Continuato)';
+                } else {
+                    isOpen = false;
+                    statusMessage = 'CHIUSO ORA';
+                }
+            } else {
+                isOpen = false;
+                statusMessage = 'CHIUSO (Domenica)';
+            }
+
+            // Aggiorna Badge Desktop & Mobile
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+            const badge = document.getElementById('live-status-badge');
+
+            const dotMob = document.getElementById('status-dot-mobile');
+            const textMob = document.getElementById('status-text-mobile');
+            const schedulePill = document.getElementById('schedule-live-pill');
+
+            if (isOpen) {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping';
+                text.className = 'text-emerald-300 font-bold';
+                text.textContent = statusMessage;
+                badge.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border bg-emerald-950/60 border-emerald-500/40 cursor-pointer';
+
+                dotMob.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
+                textMob.className = 'text-emerald-300 font-bold';
+                textMob.textContent = 'APERTO';
+
+                schedulePill.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                schedulePill.textContent = '● APERTO ORA';
+            } else {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-400';
+                text.className = 'text-rose-300 font-semibold';
+                text.textContent = statusMessage;
+                badge.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold border bg-rose-950/40 border-rose-500/30 cursor-pointer';
+
+                dotMob.className = 'w-2 h-2 rounded-full bg-rose-400';
+                textMob.className = 'text-rose-300 font-semibold';
+                textMob.textContent = 'CHIUSO';
+
+                schedulePill.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30';
+                schedulePill.textContent = statusMessage;
+            }
+
+            // Evidenzia il giorno corrente nella tabella degli orari
+            document.querySelectorAll('#weekly-hours-list li').forEach(li => {
+                if (parseInt(li.getAttribute('data-day')) === day) {
+                    li.classList.add('bg-cyan-500/15', 'border', 'border-cyan-500/30');
+                }
+            });
+        }
+
+        // 3. LOGICA CONFIGURATORE PREVENTIVO INTERATTIVO
+        const vehicleData = {
+            utilitaria: { label: 'Utilitaria / Citycar', multiplier: 1.0, extraTime: 0 },
+            berlina:    { label: 'Berlina / Station Wagon', multiplier: 1.2, extraTime: 10 },
+            suv:        { label: 'SUV / Crossover', multiplier: 1.4, extraTime: 15 },
+            furgone:    { label: 'Furgone / Van', multiplier: 1.65, extraTime: 25 }
+        };
+
+        const servicesCatalog = {
+            completo:       { name: 'Lavaggio Completo (Int + Est)', basePrice: 15, baseTime: 45 },
+            esterno:        { name: 'Solo Lavaggio Esterno & Cerchi', basePrice: 10, baseTime: 25 },
+            igienizzazione: { name: 'Igienizzazione Approfondita Interni', basePrice: 25, baseTime: 40 },
+            cera:           { name: 'Cera Protettiva Idrorepellente', basePrice: 8, baseTime: 15 }
+        };
+
+        let currentVehicle = 'utilitaria';
+        let selectedServices = new Set(['completo']);
+
+        function selectVehicle(vehicleKey) {
+            currentVehicle = vehicleKey;
+            
+            // Aggiorna UI bottoni veicolo
+            document.querySelectorAll('.vehicle-btn').forEach(btn => {
+                const isSelected = btn.getAttribute('data-vehicle') === vehicleKey;
+                const icon = btn.querySelector('i');
+                if (isSelected) {
+                    btn.className = 'vehicle-btn p-4 rounded-xl border-2 border-cyan-400 bg-cyan-500/15 text-left transition-all flex flex-col justify-between';
+                    icon.classList.replace('text-slate-300', 'text-cyan-400');
+                } else {
+                    btn.className = 'vehicle-btn p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 text-left transition-all flex flex-col justify-between';
+                    icon.classList.replace('text-cyan-400', 'text-slate-300');
+                }
+            });
+
+            updateCalculatorSummary();
+        }
+
+        function toggleService(serviceKey) {
+            // Mutua esclusione tra "Lavaggio Completo" e "Solo Esterno"
+            if (serviceKey === 'completo' && !selectedServices.has('completo')) {
+                selectedServices.delete('esterno');
+                selectedServices.add('completo');
+            } else if (serviceKey === 'esterno' && !selectedServices.has('esterno')) {
+                selectedServices.delete('completo');
+                selectedServices.add('esterno');
+            } else {
+                if (selectedServices.has(serviceKey)) {
+                    // Impedisci di deselezionare tutto
+                    if (selectedServices.size > 1) {
+                        selectedServices.delete(serviceKey);
+                    }
+                } else {
+                    selectedServices.add(serviceKey);
+                }
+            }
+
+            updateServiceCardsUI();
+            updateCalculatorSummary();
+        }
+
+        function updateServiceCardsUI() {
+            Object.keys(servicesCatalog).forEach(key => {
+                const el = document.getElementById(`srv-${key}`);
+                const checkIcon = el.querySelector('.checkbox-icon');
+                const priceLabel = document.getElementById(`price-${key}`);
+
+                // Calcola prezzo scalato sul veicolo attuale
+                const mult = vehicleData[currentVehicle].multiplier;
+                const calcPrice = Math.round(servicesCatalog[key].basePrice * mult);
+                priceLabel.textContent = `€${calcPrice}`;
+
+                if (selectedServices.has(key)) {
+                    el.className = 'service-item cursor-pointer p-4 rounded-xl border-2 border-cyan-400 bg-cyan-500/15 transition-all flex items-start justify-between gap-3';
+                    checkIcon.className = 'mt-0.5 w-5 h-5 rounded-md bg-cyan-400 text-slate-950 flex items-center justify-center checkbox-icon';
+                    priceLabel.className = 'font-display font-bold text-cyan-300 text-sm whitespace-nowrap';
+                } else {
+                    el.className = 'service-item cursor-pointer p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-500 transition-all flex items-start justify-between gap-3';
+                    checkIcon.className = 'mt-0.5 w-5 h-5 rounded-md border border-slate-600 text-transparent flex items-center justify-center checkbox-icon';
+                    priceLabel.className = 'font-display font-bold text-white text-sm whitespace-nowrap';
+                }
+            });
+        }
+
+        function updateCalculatorSummary() {
+            updateServiceCardsUI();
+
+            const vInfo = vehicleData[currentVehicle];
+            document.getElementById('summary-vehicle').textContent = vInfo.label;
+
+            const listEl = document.getElementById('summary-services-list');
+            listEl.innerHTML = '';
+
+            let totalPrice = 0;
+            let totalTime = vInfo.extraTime;
+
+            selectedServices.forEach(key => {
+                const srv = servicesCatalog[key];
+                const itemPrice = Math.round(srv.basePrice * vInfo.multiplier);
+                totalPrice += itemPrice;
+                totalTime += srv.baseTime;
+
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between text-xs bg-slate-900/90 px-3 py-2 rounded-lg border border-slate-800';
+                li.innerHTML = `
+                    <span class="flex items-center gap-2">
+                        <i class="ph-bold ph-check text-cyan-400"></i> ${srv.name}
+                    </span>
+                    <span class="font-bold text-cyan-300">€${itemPrice}</span>
+                `;
+                listEl.appendChild(li);
+            });
+
+            document.getElementById('summary-time').textContent = `~ ${totalTime} min`;
+            document.getElementById('summary-price').textContent = `€${totalPrice}`;
+        }
+
+        // Selezione diretta dalle card della sezione Servizi
+        function selectServiceFromCard(serviceKey) {
+            selectedServices.clear();
+            selectedServices.add(serviceKey);
+            updateCalculatorSummary();
+            document.getElementById('configuratore').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Trasferisce la configurazione scelta al modulo di prenotazione
+        function transferToBooking() {
+            const vInfo = vehicleData[currentVehicle];
+            const serviceNames = Array.from(selectedServices).map(k => servicesCatalog[k].name).join(' + ');
+
+            document.getElementById('booking-vehicle').value = vInfo.label;
+            document.getElementById('booking-service').value = serviceNames;
+
+            document.getElementById('prenota').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('client-name').focus();
+        }
+
+        // 4. VALIDAZIONE E INVIO MODULO PRENOTAZIONE
+        function validateBookingDay(input) {
+            const warning = document.getElementById('sunday-warning');
+            if (!input.value) return;
+            const pickedDate = new Date(input.value);
+            if (pickedDate.getDay() === 0) {
+                warning.classList.remove('hidden');
+            } else {
+                warning.classList.add('hidden');
+            }
+        }
+
+        function handleBookingSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('client-name').value;
+            const vehicle = document.getElementById('booking-vehicle').value;
+            const service = document.getElementById('booking-service').value;
+            const dateVal = document.getElementById('booking-date').value;
+            const timeSlot = document.getElementById('booking-time').value;
+
+            const formattedDate = dateVal ? new Date(dateVal).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+
+            document.getElementById('booking-form').classList.add('hidden');
+            const confirmBox = document.getElementById('booking-confirmation');
+            confirmBox.classList.remove('hidden');
+
+            document.getElementById('confirmation-details').innerHTML = `
+                Grazie <strong>${name}</strong>! Abbiamo registrato la tua richiesta per <strong>${service}</strong> (${vehicle}) per il giorno <strong>${formattedDate}</strong> nella fascia <strong>${timeSlot}</strong>.
+            `;
+        }
+
+        function resetBookingForm() {
+            document.getElementById('booking-form').reset();
+            document.getElementById('booking-form').classList.remove('hidden');
+            document.getElementById('booking-confirmation').classList.add('hidden');
+        }
+
+        // 5. COPIA INDIRIZZO NEGLI APPUNTI
+        function copyAddress() {
+            const address = "Autolavaggio Parata, Via Latiano, 72019 San Vito dei Normanni BR";
+            const tempInput = document.createElement('textarea');
+            tempInput.value = address;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const copyText = document.getElementById('copy-address-text');
+            copyText.textContent = "Indirizzo Copiato!";
+            setTimeout(() => {
+                copyText.textContent = "Copia Indirizzo";
+            }, 2500);
+        }
+
+        // INIZIALIZZAZIONE AL CARICAMENTO
+        window.onload = function() {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Imposta data minima nel datepicker a oggi (o domani se domenica)
+            const dateInput = document.getElementById('booking-date');
+            const today = new Date();
+            if (today.getDay() === 0) {
+                today.setDate(today.getDate() + 1);
+            }
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${yyyy}-${mm}-${dd}`;
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+
+            updateOpenStatus();
+            updateCalculatorSummary();
+            setInterval(updateOpenStatus, 60000);
+        };
+    </script>
+</body>
+</html>
